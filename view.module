@@ -16,6 +16,7 @@ function product_menu(){
 		'access callback' 	=>  'node_access',
 		'access arguments'	=> array('view', 1),
 		'type'				=> MENU_LOCAL_TASK,
+		'context'			=> MENU_CONTEXT_PAGE| MENU_CONTEXT_INLINE,
 	);
 
 	return $items;
@@ -44,9 +45,12 @@ function view_product_page($node){
 function product_theme(){
 
 	return array(
-		'product_item' 	=> array(
-			'arguments'	 => array('item' => null),
-			'template'   => 'product-template',
+		'#theme' => 'item_list',
+		'#items' => array(
+			'product_item' 	=> array(
+				'arguments'	 => array('item' => null),
+				'template'   => 'product-template',
+			),
 		),
 	);
 
@@ -67,6 +71,7 @@ function product_theme(){
 
 // 	$output = '<p>';
 // 	$output .= '<strong>'.chek_plain($variables['product_title']).'</strong><br>';
+// 	$output .=  product_image_item($variables);
 // 	$output .= '<strong>'.chek_plain($variables['product_description']).'</strong><br>';
 // 	$output .= '<span>'.chek_plain($variables['product_description']).'</span><br>';
 // 	$output .= '<span>'.chek_plain($variables['product_description']).'</span><br>';
@@ -81,9 +86,17 @@ function product_theme(){
 */
 
 function product_preprocess_product_item(&$variables){
-	
+
 	$variables['product_name'] = check_plain($variables['product_name']);
+	$variables['image'] = addslashes($variables['image']);
 	$variables['product_description'] = check_plain($variables['product_description']);
 	$variables['product_price'] = check_plain($variables['product_price']);
 	$variables['product_quantity'] = check_plain($variables['product_quantity']);
+}
+
+function product_image_item(&$variables){
+
+	$outut = '<img src="'.$variables['image']->path.$variables['image']->filename'" '.'alt="'.t('Product image').'">'.t('Product image').'</img>';
+	$variables['image'] = $output;
+	return $variables['image'];
 }
