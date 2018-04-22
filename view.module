@@ -1,0 +1,89 @@
+<?php
+
+/**
+* Implements hook_menu()
+*/
+
+function product_menu(){
+	
+	$items = array();
+	$items['product/%id/view'] = array(
+
+		'title' 			=> t('Product title'),
+		'description' 		=> t('Product description'),
+		'page callback' 	=> 'view_product_page',
+		'page arguments' 	=> array(1),
+		'access callback' 	=>  'node_access',
+		'access arguments'	=> array('view', 1),
+		'type'				=> MENU_LOCAL_TASK,
+	);
+
+	return $items;
+}
+
+/**
+* Implements view_product_page()
+*/
+function view_product_page($node){
+	//here have to get information for the node ex. fetch products data from database
+	$information = get_products_information($node);//to be implemeneted
+	$content = array();
+	foreach($information as $item)
+	$content[]= array(
+		'#type' => 'markup',
+		'#markup' => theme('product_item', $item)
+	);
+}
+
+/**
+* Implements hook_theme()
+* product_item is an item from the product info returned by the function product_page()
+* The theme function specifies the different items like html>values in the page, but every item
+* is constructed in own function 
+*/
+function product_theme(){
+
+	return array(
+		'product_item' 	=> array(
+			'arguments'	 => array('item' => null),
+			'template'   => 'product-template',
+		),
+	);
+
+//this code will be replaced by template file
+	// return array(
+	// 	'product_item' 	=> array(
+	// 		'variables'	 => array('item' => null),
+	// 	),
+	// );
+}
+
+/**
+* Implements product_item function that comes as theme_product_item()
+* This function will be replaced by the preprocessor function
+*/
+
+// function theme_product_item($variables){
+
+// 	$output = '<p>';
+// 	$output .= '<strong>'.chek_plain($variables['product_title']).'</strong><br>';
+// 	$output .= '<strong>'.chek_plain($variables['product_description']).'</strong><br>';
+// 	$output .= '<span>'.chek_plain($variables['product_description']).'</span><br>';
+// 	$output .= '<span>'.chek_plain($variables['product_description']).'</span><br>';
+// 	$output = '</p>';
+
+// 	return $output;
+// }
+
+/**
+* Implements preprocessor of data before to be handled to the template file product-template.tpl.php
+* function name = <module name>_preprocess_<callback_name>
+*/
+
+function product_preprocess_product_item(&$variables){
+	
+	$variables['product_name'] = check_plain($variables['product_name']);
+	$variables['product_description'] = check_plain($variables['product_description']);
+	$variables['product_price'] = check_plain($variables['product_price']);
+	$variables['product_quantity'] = check_plain($variables['product_quantity']);
+}
