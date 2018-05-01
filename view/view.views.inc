@@ -67,7 +67,11 @@ view_views_data(){
       'numeric' => true,
       'validate type' => 'uid'
     ),
+    'sort'=> array(
+      'handler'=> 'view_handler_sort_custom',
+      // 'handler'=> 'views_handler_sort',
 
+    ),
     //foreign keys definition
     'relationship' => array(
       'base' => 'users',// the table to which this field refers
@@ -135,11 +139,21 @@ view_views_data(){
       'click sortable' => true,
     ),
     'filter' => array(
-      'handler' => 'views_handler_filter_numeric',
+      'handler' => 'view_handler_filter_numeric', // custom handler
+      // 'handler' => 'views_handler_filter_numeric',
     ),
     'sort'=> array(
       'handler'=> 'views_handler_sort',// core function from views_handler_sort_date.inc
       'click sortable' => true,
+    )
+  );
+
+  //definition of area
+  $data['product']['product_area'] = array(
+    'title' => t('Product area'),
+    'help' => t('Display product area'),
+    'area' => array(
+      'handler' => 'view_handler_area_product'
     )
   );
   return $data;

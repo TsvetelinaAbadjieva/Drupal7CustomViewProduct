@@ -3,3 +3,6 @@ description = View for Product presentation
 package = Custom Modules
 core = 7.x
 files[] = view_handler_field_percent.inc
+files[] = view_handler_filter_numeric.inc
+files[] = view_handler_sort_custom.inc
+files[] = view_handler_area_product.inc

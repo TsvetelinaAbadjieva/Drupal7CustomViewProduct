@@ -9,7 +9,7 @@ class view_handler_field_percent extends view_handler_field_numeric{
   }
 
   function query(){
-    parent:query();
+    parent::query();
     if($this->options['percent']){
       $this->add_additional_fields();
     }
