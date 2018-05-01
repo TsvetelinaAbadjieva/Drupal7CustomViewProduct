@@ -1,0 +1,74 @@
+<?php
+/**
+* Implements hook_menu()
+*/
+
+function product_menu(){
+
+	$items = array();
+	$items['product/%id/view'] = array(
+
+		'title' 			=> t('Product title'),
+		'description' 		=> t('Product description'),
+		'page callback' 	=> 'view_product_page',
+		'page arguments' 	=> array(1),
+		'access callback' 	=>  'node_access',
+		'access arguments'	=> array('view', 1),
+		'type'				=> MENU_LOCAL_TASK,
+		'context'			=> MENU_CONTEXT_PAGE| MENU_CONTEXT_INLINE,
+	);
+
+	return $items;
+}
+
+/**
+* Implements access_callback
+*/
+
+function node_access($account){
+  global $user;
+
+  return $user->uid == $account->uid || user_access('administer stite configuration');
+}
+
+/**
+* Implements view_product_page
+*/
+
+function view_product_page(stdClass $account){
+
+  $rows = array();
+  $query = db_select('product', 'p')
+    ->condition('p.uid', $account->uid);
+  $query->innerJoin('node', 'n', 'n.nid= p.nid');
+  $query->fields('p');
+  $query->addField('n', 'nid');
+  $query->addField('n', 'title');
+  $results = $query->execute();
+  foreach($results as $record){
+    $rows[]= array(
+      l($record->title, 'node/'.$record->nid),
+      check_plain($record->price),
+      check_plain($record->description),
+      format_date($record->created_at)
+    );
+  }
+  $header = array(t('Title'), t('Price'), t('Description'), t('Created at'));
+  $output = array();
+  $output = array(
+    '#theme' => 'table',
+    '#header' => $header,
+    '#rows'=> $rows
+  );
+  return $output;
+}
+
+/**
+* Implements hook_views_api()
+*/
+function view_views_api(){
+  return array(
+    'api'=> 3,
+    'path' => drupal_get_path('module', 'view')
+  );
+}

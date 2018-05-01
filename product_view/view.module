@@ -5,7 +5,7 @@
 */
 
 function product_menu(){
-	
+
 	$items = array();
 	$items['product/%id/view'] = array(
 
@@ -40,7 +40,7 @@ function view_product_page($node){
 * Implements hook_theme()
 * product_item is an item from the product info returned by the function product_page()
 * The theme function specifies the different items like html>values in the page, but every item
-* is constructed in own function 
+* is constructed in own function
 */
 function product_theme(){
 
@@ -48,7 +48,7 @@ function product_theme(){
 		'#theme' => 'item_list',
 		'#items' => array(
 			'product_item' 	=> array(
-				'arguments'	 => array('item' => null),
+				'arguments'	 => array('variables' => null),
 				'template'   => 'product-template',
 			),
 		),
