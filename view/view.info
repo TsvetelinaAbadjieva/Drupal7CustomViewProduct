@@ -1,0 +1,5 @@
+name = Product View
+description = View for Product presentation
+package = Custom Modules
+core = 7.x
+files[] = view_handler_field_percent.inc

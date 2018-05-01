@@ -126,6 +126,21 @@ view_views_data(){
       'click sortable' => true,
     )
   );
-
+  $data['product']['view_count'] = array(
+    'title' => t('Product count of views'),
+    'help' => t('Store info for count of  product been viewed'),
+    'field' => array(
+    'handler' => 'view_handler_field_percent'// custom handler class extending views handler_field_numeric
+      // 'handler'=> 'views_handler_field_numeric',//standart function from a class views_handler_field_numeric.inc
+      'click sortable' => true,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_numeric',
+    ),
+    'sort'=> array(
+      'handler'=> 'views_handler_sort',// core function from views_handler_sort_date.inc
+      'click sortable' => true,
+    )
+  );
   return $data;
 }
